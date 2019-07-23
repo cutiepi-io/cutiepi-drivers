@@ -1,0 +1,63 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "brcm,bcm2835";
+    /*
+    fragment@0 {
+		target=<&soc>;
+
+		__overlay__ {
+			vc4_dsi: vc4_dsi {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				power-domains = <&power 18>;
+				panel@0 {
+				    compatible = "vc4-dsi", "vc4_dsi", "vc4 dsi";
+				    reg = <0>;
+					port {
+						panel_dsi_port: endpoint {
+							remote-endpoint = <&dsi_out_port>;
+						};
+				    };
+				};
+		    };
+		};
+    };
+    */
+
+    fragment@1 {
+		target=<&dsi1>;
+		__overlay__ {
+		    status = "okay";
+			power-domains = <&power 18>;
+		    port {
+				dsi_out_port: endpoint {
+					remote-endpoint = <&panel_dsi_port>;
+		        };
+			};	    
+		};
+    };
+
+    fragment@2 {
+		target = <&dsi1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+			power-domains = <&power 18>;
+
+		    panel_jd9366:panel@0 {
+				compatible = "boe,jd9366";
+
+				label = "panel_test";
+				reg = <0>;
+				port {
+					panel_dsi_port: endpoint {
+						remote-endpoint = <&dsi_out_port>;
+					};
+				};
+			};
+		};
+    };
+};
