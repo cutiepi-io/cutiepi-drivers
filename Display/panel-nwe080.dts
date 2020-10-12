@@ -1,0 +1,58 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "brcm,bcm2835";
+
+    fragment@1 {
+		target=<&dsi1>;
+		__overlay__ {
+		    status = "okay";
+			power-domains = <&power 18>;
+		    port {
+				dsi_out_port: endpoint {
+					remote-endpoint = <&panel_dsi_port>;
+		        };
+			};	    
+		};
+    };
+
+    fragment@2 {
+		target = <&dsi1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+			power-domains = <&power 18>;
+
+		    panel_nwe080:panel@0 {
+				compatible = "nwe,nwe080";
+
+				label = "panel_test";
+				reg = <0>;
+				/*reset-gpios = <&gpioh 7 GPIO_ACTIVE_LOW>;*/
+				/*power-supply = <&vdd_dsi>;*/
+				port {
+					panel_dsi_port: endpoint {
+						remote-endpoint = <&dsi_out_port>;
+					};
+				};
+			};
+/*
+			panel-dsi@0 {
+				compatible = "orisetech,otm8009a";
+				reg = <0>;
+				reset-gpios = <&gpio 6 GPIO_ACTIVE_LOW>;
+				power-supply = <&vdd_dsi>;
+				status = "okay";
+
+				port {
+					dsi_panel_in: endpoint {
+						remote-endpoint = <&dsi_out>;
+					};
+				};
+			};
+*/
+		};
+    };
+};
