@@ -4,13 +4,13 @@
 /plugin/;
 
 / {
-        compatible = "brcm,bcm2708";
+        compatible = "brcm,bcm2835";
 
         fragment@0 {
                 target = <&gpio>;
                 __overlay__ {
                         goodix_pins: goodix_pins {
-                                brcm,pins = <43 42>; // interrupt and reset
+                                brcm,pins = <21 26>; // interrupt and reset
                                 brcm,function = <0 0>; // in
                                 brcm,pull = <2 2>; // pull-up
                         };
@@ -18,7 +18,7 @@
         };
 
         fragment@1 {
-                target = <&i2c0>;
+                target = <&i2c6>;
                 __overlay__ {
                         #address-cells = <1>;
                         #size-cells = <0>;
@@ -30,9 +30,9 @@
                                 pinctrl-names = "default";
                                 pinctrl-0 = <&goodix_pins>;
                                 interrupt-parent = <&gpio>;
-                                interrupts = <43 2>; // high-to-low edge triggered
-                                irq-gpios = <&gpio 43 0>; 
-                                reset-gpios = <&gpio 42 0>;
+                                interrupts = <21 2>; // high-to-low edge triggered
+                                irq-gpios = <&gpio 21 0>; 
+                                reset-gpios = <&gpio 26 0>;
                         };
                 };
         };
