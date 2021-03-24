@@ -44,20 +44,6 @@ static const struct drm_display_mode default_mode = {
 	.flags = 0,
 	.width_mm = 107,
 	.height_mm = 172,
-
-	// .clock = 65295,
-	// .hdisplay = 800,
-	// .hsync_start = 800 + 25,
-	// .hsync_end = 800 + 25 + 10,
-	// .htotal = 800 + 25 + 10 + 6,
-	// .vdisplay = 1280,
-	// .vsync_start = 1280 + 10,
-	// .vsync_end = 1280 + 45 + 45,
-	// .vtotal = 1280 + 45 + 45 + 4,
-	// .vrefresh = 60,
-	// .flags = 0,
-	// .width_mm = 107,
-	// .height_mm = 172,
 };
 
 static inline struct nwe080 *panel_to_nwe080(struct drm_panel *panel)
@@ -483,8 +469,7 @@ static int nwe080_probe(struct mipi_dsi_device *dsi)
 
 	dsi->lanes = 4;
 	dsi->format = MIPI_DSI_FMT_RGB888;
-	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
-			  MIPI_DSI_MODE_LPM;//MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE;
+	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST | MIPI_DSI_MODE_VIDEO_HSE | MIPI_DSI_MODE_EOT_PACKET | MIPI_DSI_MODE_LPM;
 
 	drm_panel_init(&ctx->panel, &dsi->dev, &nwe080_drm_funcs, 
 				DRM_MODE_CONNECTOR_DPI);
