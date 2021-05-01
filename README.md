@@ -1,34 +1,25 @@
 ## Drivers for the CutiePi tablet 
 
-This repository hosts modified drivers and device tree sources needed for the [CutiePi board](https://github.com/cutiepi-io/cutiepi-board), the open source Raspberry Pi Compute Module 3 carrier board. 
+This repository hosts modified drivers and device tree sources needed for the [CutiePi board](https://github.com/cutiepi-io/cutiepi-board), the open source Raspberry Pi Compute Module 4 carrier board. 
 
-Current release is based on Raspbian Buster and kernel 4.19.50. 
-
-### WiFi 
-
-The CutiePi board has `RTL8723BS` module built-in, simply enable its staging kernel module (`CONFIG_RTL8723BS=M`), and re-configure `sdio` overlay to GPIO34-GPIO39 in `config.txt`: 
-
-    dtoverlay=sdio,sdio_overclock=25,gpios_34_39,poll_once=off
-
-Firmware file (`rtl8723bs_nic.bin`) is provided by the `firmware-realtek` package from Raspbian. 
+Current release is tested on Raspberry Pi OS (`2021-03-04`) and kernel 5.10 (`5.10.17-v7l+`). 
 
 ### MIPI Display 
 
-CutiePi tablet chose to use an 8-inch (800x1280) MIPI DIS TFT LCD display, it has `JD9366` as its LCD driver. 
+CutiePi tablet chose to use an 8-inch (800x1280) MIPI DIS TFT LCD display, it has `ILI9881C` as its LCD driver. 
 
-To enable this, copy all files under `Display/drivers/gpu/drm/panel/` to kernel source directory, build the module with `CONFIG_DRM_PANEL_JD9366=M`, then load `panel-jd9366`. 
+To enable this, copy all files under `Display/drivers/gpu/drm/panel/` to kernel source directory, build the module with `CONFIG_DRM_PANEL_NWE080=M`, then load `panel-nwe080`. 
 
-A device tree overlay is also needed, compile `Display/panel-jd9366.dts` with following command: 
+A device tree overlay is also needed, compile `Display/panel-nwe080.dts` with following command: 
 
-    dtc -I dts -O dtb -o panel-jd9366.dtbo panel-jd9366.dts
+    dtc -I dts -O dtb -o panel-nwe080.dtbo panel-nwe080.dts
 
 Copy the file to `/boot/overlays`, and configure in `config.txt`: 
 
-    dtoverlay=vc4-kms-v3d
-    dtoverlay=panel-jd9366
-    ignore_lcd=1
-    gpio=12=op,dh 
-    
+    # MIPI DSI display 
+    dtoverlay=panel-nwe080
+    gpio=12=op,dh
+
 ### Touch panel 
 
 To enable Goodix GT9xx multitouch controller, compile the device tree overlay under `Touch`: 
@@ -37,5 +28,25 @@ To enable Goodix GT9xx multitouch controller, compile the device tree overlay un
 
 And configure `config.txt` accordingly: 
 
-    dtoverlay=i2c0-bcm2708,sda0_pin=0,scl0_pin=1
+    dtoverlay=i2c6
     dtoverlay=cutiepi_touch
+
+### Camera 
+
+    # Camera (with dt-blob.bin)
+    start_x=1
+    gpu_mem=128
+    # Uncomment for camera module v2
+    #dtoverlay=imx219
+    dtoverlay=ov5647
+
+### Gyroscope 
+
+    # Gyroscope 
+    dtoverlay=i2c5,pins_10_11
+
+### MCU 
+
+    # MCU reading (ttyS0)
+    enable_uart=1
+    dtoverlay=uart1
