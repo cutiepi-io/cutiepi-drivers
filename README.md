@@ -2,24 +2,23 @@
 
 This repository hosts modified drivers and device tree sources needed for the [CutiePi board](https://github.com/cutiepi-io/cutiepi-board), the open source Raspberry Pi Compute Module 4 carrier board. 
 
-Current release is based on Raspbian Buster and kernel 5.10.0. 
+Current release is tested on Raspberry Pi OS (`2021-03-04`) and kernel 5.10 (`5.10.17-v7l+`). 
 
 ### MIPI Display 
 
-CutiePi tablet chose to use an 8-inch (800x1280) MIPI DIS TFT LCD display, it has `JD9366` as its LCD driver. 
+CutiePi tablet chose to use an 8-inch (800x1280) MIPI DIS TFT LCD display, it has `ILI9881C` as its LCD driver. 
 
-To enable this, copy all files under `Display/drivers/gpu/drm/panel/` to kernel source directory, build the module with `CONFIG_DRM_PANEL_JD9366=M`, then load `panel-jd9366`. 
+To enable this, copy all files under `Display/drivers/gpu/drm/panel/` to kernel source directory, build the module with `CONFIG_DRM_PANEL_NWE080=M`, then load `panel-nwe080`. 
 
-A device tree overlay is also needed, compile `Display/panel-jd9366.dts` with following command: 
+A device tree overlay is also needed, compile `Display/panel-nwe080.dts` with following command: 
 
-    dtc -I dts -O dtb -o panel-jd9366.dtbo panel-jd9366.dts
+    dtc -I dts -O dtb -o panel-nwe080.dtbo panel-nwe080.dts
 
 Copy the file to `/boot/overlays`, and configure in `config.txt`: 
 
-    dtoverlay=vc4-kms-v3d-pi4 
-    dtoverlay=panel-jd9366
-    ignore_lcd=1
-    gpio=12=op,dh 
+    # MIPI DSI display 
+    dtoverlay=panel-nwe080
+    gpio=12=op,dh
 
 ### Touch panel 
 
@@ -31,3 +30,23 @@ And configure `config.txt` accordingly:
 
     dtoverlay=i2c6
     dtoverlay=cutiepi_touch
+
+### Camera 
+
+    # Camera (with dt-blob.bin)
+    start_x=1
+    gpu_mem=128
+    # Uncomment for camera module v2
+    #dtoverlay=imx219
+    dtoverlay=ov5647
+
+### Gyroscope 
+
+    # Gyroscope 
+    dtoverlay=i2c5,pins_10_11
+
+### MCU 
+
+    # MCU reading (ttyS0)
+    enable_uart=1
+    dtoverlay=uart1
