@@ -3,7 +3,7 @@
 
 / {
     compatible = "brcm,bcm2835,bcm2711";
-    
+    /*
     fragment@0 {
         target=<&dsi0>;
 
@@ -39,6 +39,7 @@
             };
         };
     };
+    */
                     
     fragment@1 {
         target=<&dsi1>;
