@@ -22,6 +22,7 @@ Copy the file to `/boot/overlays`, then add following configure in `config.txt`:
 
     # MIPI DSI display 
     dtoverlay=panel-nwe080
+    gpio=12=op,dh
 
 ### Touch panel 
 
@@ -47,6 +48,10 @@ And configure `config.txt` accordingly:
 
     # Gyroscope 
     dtoverlay=i2c5,pins_10_11
+
+### USB host 
+    
+    dtoverlay=dwc2,dr_mode=host
 
 ### MCU 
 
