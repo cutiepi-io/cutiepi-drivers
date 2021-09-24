@@ -2,17 +2,21 @@
 
 This repository hosts modified drivers and device tree sources needed for the [CutiePi board](https://github.com/cutiepi-io/cutiepi-board), the open source Raspberry Pi Compute Module 4 carrier board. 
 
-Current release is tested on Raspberry Pi OS (`2021-05-07`) and kernel 5.10 (`5.10.17-v7l+`).
+Current release is tested on Raspberry Pi OS (`2021-08-31`) with kernel 5.10 and 5.11. 
 
 ### MIPI Display 
 
 CutiePi tablet uses an 8-inch (800x1280) MIPI DIS TFT LCD display, it has `ILI9881C` as its LCD driver. 
 
-To enable this, copy all files under `Display/drivers/gpu/drm/panel/` to the kernel source directory, build the module with `CONFIG_DRM_PANEL_NWE080=M`, and load `panel-nwe080.ko`:
+The `panel-nwe080` driver is now a dkms package, and can be installed to the system using following commands: 
 
-    make oldconfig 
-    make scripts prepare modules_prepare
-    make -C . M=drivers/gpu/drm/panel/
+    # on the Pi system 
+    sudo apt install dkms raspberrypi-kernel-headers 
+    sudo tar xvf Display/panel-nwe080-1.0.tgz -C /usr/src/
+
+    sudo dkms add -m panel-nwe080 -v 1.0
+    sudo dkms build -m panel-nwe080 -v 1.0
+    sudo dkms install -m panel-nwe080 -v 1.0
 
 A device tree overlay is also needed, which can be compiled from `Display/panel-nwe080.dts` with following command: 
 
