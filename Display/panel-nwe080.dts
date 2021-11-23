@@ -3,43 +3,6 @@
 
 / {
     compatible = "brcm,bcm2835,bcm2711";
-    /*
-    fragment@0 {
-        target=<&dsi0>;
-
-        __overlay__ {
-            status = "okay";
-
-            power-domains = <&power 17>;
-
-            #address-cells = <1>;
-            #size-cells = <0>;
-
-            port {
-                dsi0_out_port: endpoint {
-                    remote-endpoint = <&panel_dsi_in0>;
-                };
-            };
-
-            display0: panel@0 {
-                compatible = "nwe,nwe080";
-                reg=<0>;
-
-                reset-gpios = <&gpio 13 0>;
-                vdio-gpios = <&gpio 19 0>;
-                vci-gpios = <&gpio 26 0>;
-                bst-gpios = <&gpio 5 1>;
-
-                vc4_dsi = <&dsi0>;
-                port {
-                    panel_dsi_in0: endpoint {
-                        remote-endpoint = <&dsi0_out_port>;
-                    };
-                };
-            };
-        };
-    };
-    */
                     
     fragment@1 {
         target=<&dsi1>;
