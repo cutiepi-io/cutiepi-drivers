@@ -8,7 +8,7 @@ Current release is tested on Raspberry Pi OS (arm64 bullseye) with kernel 5.10 a
 
 CutiePi tablet uses an 8-inch (800x1280) MIPI DIS TFT LCD display, it has `ILI9881C` as its LCD driver. 
 
-The needed display driver and overlay has been merged into Raspberry Pi's official linux tree (`rpi-5.10.y` branch). We kept the driver and overlay filess in in this repo for reference. 
+The needed display driver and overlay has been merged into Raspberry Pi's official linux tree (`rpi-5.10.y` branch). We kept the driver and overlay files in this repo for reference. 
 
 A device tree overlay is also needed, which can be compiled from `Display/cutiepi-panel-overlay.dts` with following command: 
 
